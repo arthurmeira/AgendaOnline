@@ -1,0 +1,83 @@
+.contact-card {
+    max-width: 400px;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card .card-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.contact-card .list-group-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-card .list-group-item i {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+
+    background-image: url(/images/banner-2.jpg);
+}
+
+header, footer {
+    width: 100%;
+    max-width: 60%; /* Largura uniforme */
+    margin: auto;
+    text-align: center;
+}
+
+header {
+    background-color: rgba(10, 56, 156);
+    color: white;
+    padding: 1rem 0;
+}
+
+main{
+    background-color: hsla(0, 0%, 100%);
+    width: 40%;
+}
+
+main section{
+    width: 40%;
+    margin: auto;
+}
+
+footer {
+    border-top: 1px solid #ddd;
+    background-color: white;
+    padding: 15px;
+}
+
+.container {
+    flex: 1;
+    width: 100%;
+    max-width: 60%; /* Largura uniforme */
+    margin: auto;
+    padding: 1rem;
+}
+
+
+footer img {
+    width: 40px;
+    margin: 10px;
+}
+
+#aluno-form,
+#profissional-form {
+    display: none;
+}
