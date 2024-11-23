@@ -1,20 +1,15 @@
 const express = require('express');
 const pool = require('../db/db');
-
-const router = express.Router();
+const router = express.Router();  // Aqui você define a variável 'router'
 
 router.get('/usuarios', async (req, res) => {
     try {
         const queryUsuarios = `
-            SELECT u.id, u.nome, 'Aluno' AS tipo, u.deficiencia, NULL AS email, NULL AS numero, NULL AS especialidade
-            FROM aluno u
-            UNION
-            SELECT p.id, p.nome, 'Profissional' AS tipo, NULL AS deficiencia, p.email, p.numero, e.descricao AS especialidade
-            FROM profissional p
-            LEFT JOIN especialidade e ON p.especialidade_id = e.id;
+            SELECT * FROM ALUNO;
         `;
 
         const { rows } = await pool.query(queryUsuarios);
+        console.log('Usuários retornados:', rows); // Depuração
 
         res.json(rows);
     } catch (err) {
@@ -23,4 +18,4 @@ router.get('/usuarios', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router;  // Exporta o router para ser utilizado no server.js
