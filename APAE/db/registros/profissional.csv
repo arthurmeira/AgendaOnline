@@ -1,0 +1,6 @@
+"id","nome","especialidade_id","email","numero"
+1,"Dr. João",1,"joao@exemplo.com","123456789"
+2,"Dr. Ana",2,"ana@exemplo.com","987654321"
+3,"Dr. Carlos",3,"carlos@exemplo.com","456123789"
+4,"Dr. Maria",4,"maria@exemplo.com","321789654"
+5,"Dr. Pedro",5,"pedro@exemplo.com","654987321"

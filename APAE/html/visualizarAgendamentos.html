@@ -35,51 +35,34 @@
             <h2 class="text-center mb-4">Agendamentos cadastrados</h2>
             <br><br>
             <!-- Campo de Pesquisa -->
+
+            <!-- Tabela de Agendamentos -->
+            <div class="table-responsive">
             <div class="mb-4">
                 <label for="pesquisa" class="form-label">Pesquisar Agendamento:</label>
                 <input type="text" id="pesquisa" class="form-control" placeholder="Digite o nome do estudante, profissional, data ou horário">
             </div>
 
-            <!-- Tabela de Agendamentos -->
-            <div class="table-responsive">
-                <table id="agendamentos-tabela" class="table table-bordered">
+                <table id="tabela-agendamento" class="table table-bordered">
                     <thead class="table-primary">
                         <tr>
                             <th>Código</th>
-                            <th>Estudante</th>
+                            <th>Dia</th>
+                            <th>Horário Início</th>
+                            <th>Horário Fim</th>
                             <th>Profissional</th>
-                            <th>Data</th>
-                            <th>Horário</th>
+                            <th>Aluno</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Exemplo de dados para teste -->
-                        <tr>
-                            <td>1</td>
-                            <td>João da Silva</td>
-                            <td>Dr. Ana Cardoso</td>
-                            <td>2024-11-25</td>
-                            <td>10:00 - 11:00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Maria Souza</td>
-                            <td>Dr. Pedro Marques</td>
-                            <td>2024-11-26</td>
-                            <td>14:00 - 15:30</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Carlos Oliveira</td>
-                            <td>Dra. Júlia Farias</td>
-                            <td>2024-11-27</td>
-                            <td>09:00 - 10:00</td>
-                        </tr>
+                    <tbody id="agendamento-tbody">
+                        
                     </tbody>
                 </table>
             </div>
             <button type="button" style="float: right;" class="btn btn-success"><a href="/html/agendamentos.html" class="nav-link">Novo agendamento</a></button>
         </section>
+        
     </main>
 
     <!-- Footer -->
@@ -88,34 +71,10 @@
         <p class="">Associação de Pais e Amigos dos Excepcionais de Criciúma</p>
     </footer>
 
-    <script>
-        // Filtro de pesquisa para agendamentos
-        const pesquisaInput = document.getElementById("pesquisa");
-        const tabela = document.getElementById("agendamentos-tabela");
-        const linhas = tabela.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    <script src="/javascript/agendamentos/agendamentos.js"></script>
 
-        pesquisaInput.addEventListener("input", () => {
-            const query = pesquisaInput.value.toLowerCase().trim();
 
-            for (let linha of linhas) {
-                const colunas = linha.getElementsByTagName("td");
-                const textoLinha = Array.from(colunas).map(coluna => coluna.textContent.toLowerCase()).join(" ");
-                
-                if (textoLinha.includes(query)) {
-                    linha.classList.add("visible");
-                } else {
-                    linha.classList.remove("visible");
-                }
-            }
-        });
-
-        // Mostrar todas as linhas inicialmente
-        window.addEventListener("load", () => {
-            for (let linha of linhas) {
-                linha.classList.add("visible");
-            }
-        });
-    </script>
+    <script src="/javascript/agendamentos/pesquisaAgendamentos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

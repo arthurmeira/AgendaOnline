@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 
 const usuariosRoutes = require('../routes/usuariosRoutes'); // Caminho correto
+const profissionaisRoutes = require('../routes/profissionaisRoutes'); // Caminho correto]
+const agendamentosRoutes = require('../routes/agendamentosRoutes'); // Caminho correto
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.get('/visualizarUsuarios', (req, res) => {
 
 // Rotas específicas
 app.use('/api', usuariosRoutes); // Prefixo '/api' para rotas relacionadas a usuários
+app.use('/api', profissionaisRoutes); // Prefixo '/api' para rotas relacionadas a usuários
+app.use('/api', agendamentosRoutes); // Prefixo '/api' para rotas relacionadas a usuários
 
 // Iniciando o servidor
 app.listen(8080, () => {
