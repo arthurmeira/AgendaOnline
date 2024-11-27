@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>${aluno.deficiencia || '-'}</td>
                         <td>${formatarData(aluno.data_nascimento) || '-'}</td>
                         <td style="text-align: center;">
-                            <a href="#"><img width="36px" src="/images/visao.png" alt="Ver"></a>
-                            <a href="#"><img width="36px" src="/images/caneta.png" alt="Editar"></a>
-                            <a href="#"><img width="36px" src="/images/excluir.png" alt="Excluir"></a>
+                            <a href="#"><img width="36px" src="/APAE/images/visao.png" alt="Ver"></a>
+                            <a href="#"><img width="36px" src="/APAE/images/caneta.png" alt="Editar"></a>
+                            <a href="#"><img width="36px" src="/APAE/images/excluir.png" alt="Excluir"></a>
                         </td>
                     `;
                     tabelaAlunoBody.appendChild(linha);

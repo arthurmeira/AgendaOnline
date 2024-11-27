@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${profissional}</td> <!-- Corrigido -->
                 <td>${aluno}</td>
                 <td style="text-align: center;">
-                    <a href="#"><img width="32px" src="/images/visualizar.png" alt=""></a>
-                    <a href="#"><img width="32px" src="/images/editar.png" alt=""></a>
-                    <a href="#"><img width="32px" src="/images/excluir.png" alt=""></a>
+                    <a href="#"><img width="32px" src="/APAE/images/visualizar.png" alt=""></a>
+                    <a href="#"><img width="32px" src="/APAE/images/editar.png" alt=""></a>
+                    <a href="#"><img width="32px" src="/APAE/images/excluir.png" alt=""></a>
                 </td>  
             `;
             tabelaBody.appendChild(linha);
