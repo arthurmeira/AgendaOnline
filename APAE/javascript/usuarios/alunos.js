@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${usuario.deficiencia}</td>
                 <td>${new Date(usuario.data_nascimento).toLocaleDateString()}</td>
                 <td style="text-align: center;">
-                    <a href="#" class="visualizar"><img width="32px" src="/APAE/images/visualizar.png" alt=""></a>
+                    <a href="#" class="visualizar-aluno" data-id="${usuario.id}"><img width="32px" src="/APAE/images/visualizar.png" alt=""></a>
                     <a href="#" class="editar-aluno"><img width="32px" src="/APAE/images/editar.png" alt=""></a>
                     <a href="#" class="excluir-aluno" data-id="${usuario.id}"><img width="32px" src="/APAE/images/excluir.png" alt=""></a>
                 </td>                
@@ -30,7 +30,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             tabelaBody.appendChild(linha); // Adiciona a linha à tabela
         });
 
-        // Adicionando a funcionalidade de exclusão apenas para alunos
+        // Função para visualizar um aluno específico
+        const visualizarLinks = document.querySelectorAll('.visualizar-aluno'); // Seletor específico para visualizar alunos
+        visualizarLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+                const alunoId = link.getAttribute('data-id'); // Pega o ID do aluno
+                
+                // Redireciona para a página de visualização com o ID na URL
+                window.location.href = `/APAE/html/visualizarAluno.html?id=${alunoId}`;
+            });
+        });
+
+        // Adicionando a funcionalidade de exclusão
         const excluirLinks = document.querySelectorAll('.excluir-aluno'); // Seletor específico para alunos
         excluirLinks.forEach(link => {
             link.addEventListener('click', async (event) => {
@@ -64,18 +76,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             });
         });
+
+        // Função para redirecionar para edição
+        document.querySelectorAll('.editar-aluno').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+                const linha = link.closest('tr'); // Pega a linha correspondente ao aluno
+                const alunoId = linha.getAttribute('data-id'); // Recupera o ID do aluno
+        
+                // Redireciona para a página de edição com o ID na URL
+                window.location.href = `/APAE/html/edicaoAluno.html?id=${alunoId}`;
+            });
+        });
+
     } catch (err) {
         console.error('Erro ao buscar ou renderizar dados:', err);
     }
-
-    document.querySelectorAll('.editar-aluno').forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault(); // Impede o comportamento padrão do link
-            const linha = link.closest('tr'); // Pega a linha correspondente ao aluno
-            const alunoId = linha.getAttribute('data-id'); // Recupera o ID do aluno
-    
-            // Redireciona para a página de edição com o ID na URL
-            window.location.href = `/APAE/html/edicaoAluno.html?id=${alunoId}`;
-        });
-    });
 });

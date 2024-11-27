@@ -35,7 +35,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${profissional.email}</td>
                 <td>${profissional.numero}</td>
                 <td style="text-align: center;">
-                    <a href="#"><img width="32px" src="/APAE/images/visualizar.png" alt=""></a>
+                    <a href="#" class="visualizar-profissional" data-id="${profissional.id}">
+                        <img width="32px" src="/APAE/images/visualizar.png" alt="">
+                    </a>
                     <a href="#"><img width="32px" src="/APAE/images/editar.png" alt=""></a>
                     <a href="#" class="excluir" data-id="${profissional.id}">
                         <img width="32px" src="/APAE/images/excluir.png" alt="">
@@ -76,6 +78,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                         alert('Erro ao excluir profissional');
                     }
                 }
+            });
+        });
+
+        // Função para visualizar um profissional
+        const visualizarLinks = document.querySelectorAll('.visualizar-profissional');
+        visualizarLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const profissionalId = link.getAttribute('data-id');
+                window.location.href = `/APAE/html/visualizarProfissional.html?id=${profissionalId}`;
             });
         });
 
