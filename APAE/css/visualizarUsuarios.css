@@ -3,13 +3,14 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-
+    overflow-x: hidden;
     background-image: url(/APAE/images/banner-2.jpg);
 }
 
-header, footer {
+header,
+footer {
     width: 100%;
-    max-width: 60%; /* Largura uniforme */
+    max-width: 60%;
     margin: auto;
     text-align: center;
 }
@@ -20,13 +21,14 @@ header {
     padding: 1rem 0;
 }
 
-main{
+main {
     background-color: hsla(0, 0%, 100%);
-    width: 40%;
+    width: 60%;
+    margin: auto;
 }
 
-main section{
-    width: 90%;
+main section {
+    width: 100%;
     margin: auto;
 }
 
@@ -39,11 +41,10 @@ footer {
 .container {
     flex: 1;
     width: 100%;
-    max-width: 60%; /* Largura uniforme */
+    max-width: 60%;
     margin: auto;
     padding: 1rem;
 }
-
 
 footer img {
     width: 40px;
@@ -58,4 +59,85 @@ footer img {
 #aluno-tbody {
     display: table-row-group;
     visibility: visible;
+}
+
+#tabela-aluno,
+#tabela-profissional {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+#tabela-aluno th,
+#tabela-profissional th,
+#tabela-aluno td,
+#tabela-profissional td {
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+@media (max-width: 780px) {
+    main {
+        width: 90%;
+    }
+
+    header,
+    footer,
+    .container {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    #tabela-aluno,
+    #tabela-profissional {
+        font-size: 14px;
+    }
+
+    #tabela-aluno th,
+    #tabela-aluno td,
+    #tabela-profissional th,
+    #tabela-profissional td {
+        padding: 6px;
+    }
+
+    #tabela-aluno th,
+    #tabela-profissional th {
+        font-size: 14px;
+    }
+
+    .btn a {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        font-size: 1.2rem;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
+
+    #tabela-aluno,
+    #tabela-profissional {
+        font-size: 12px;
+    }
+
+    #tabela-aluno th,
+    #tabela-aluno td,
+    #tabela-profissional th,
+    #tabela-profissional td {
+        padding: 5px;
+    }
+
+    #tabela-aluno th,
+    #tabela-profissional th {
+        font-size: 13px;
+    }
+
+    .btn a {
+        font-size: 12px;
+    }
 }

@@ -7,9 +7,10 @@ body {
     background-image: url(/APAE/images/banner-2.jpg);
 }
 
-header, footer {
+header,
+footer {
     width: 100%;
-    max-width: 60%; /* Largura uniforme */
+    max-width: 60%;
     margin: auto;
     text-align: center;
 }
@@ -20,12 +21,12 @@ header {
     padding: 1rem 0;
 }
 
-main{
+main {
     background-color: hsla(0, 0%, 100%);
     width: 40%;
 }
 
-main section{
+main section {
     width: 90%;
     margin: auto;
 }
@@ -39,7 +40,7 @@ footer {
 .container {
     flex: 1;
     width: 100%;
-    max-width: 60%; /* Largura uniforme */
+    max-width: 60%;
     margin: auto;
     padding: 1rem;
 }
@@ -50,3 +51,37 @@ footer img {
     margin: 10px;
 }
 
+@media (max-width: 768px) {
+    main {
+        width: 90%;
+    }
+
+    header,
+    footer,
+    .container {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    #tabela-agendamento {
+        font-size: 12px;
+        display: block;
+        overflow-x: auto;
+    }
+
+    #tabela-agendamento th,
+    #tabela-agendamento td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        font-size: 1.2rem;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
+}
