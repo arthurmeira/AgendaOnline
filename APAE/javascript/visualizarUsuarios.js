@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     tabelaAlunoBody.appendChild(linha);
                 });
 
+       
                 // Filtra os profissionais
                 const profissionais = usuarios.filter(usuario => usuario.tipo === 'Profissional');
                 const tabelaProfissionalBody = document.getElementById("profissional-tbody");

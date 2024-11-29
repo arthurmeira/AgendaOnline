@@ -32,15 +32,27 @@
                 return;
             }
 
+            // Mapeamento de especialidades
+            const especialidades = {
+                1: "Cardiologia",
+                2: "Ortopedia",
+                3: "Neurologia",
+                4: "Dermatologia",
+                5: "Pediatria"
+            };
+
             try {
                 const resposta = await fetch(`http://localhost:8080/api/profissionais/${profissionalId}`);
                 const profissional = await resposta.json();
 
                 if (resposta.ok) {
+                    // Substituir o código da especialidade pelo nome
+                    const nomeEspecialidade = especialidades[profissional.especialidade_id] || "Desconhecida";
+
                     document.getElementById('detalhes-container').innerHTML = `
                         <p><strong>ID:</strong> ${profissional.id}</p>
                         <p><strong>Nome:</strong> ${profissional.nome}</p>
-                        <p><strong>Especialidade:</strong> ${profissional.especialidade}</p>
+                        <p><strong>Especialidade:</strong> ${nomeEspecialidade}</p>
                         <p><strong>Email:</strong> ${profissional.email}</p>
                         <p><strong>Número:</strong> ${profissional.numero}</p>
                     `;

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 
@@ -28,40 +27,31 @@
             <form id="agendamento-form">
                 <!-- Seleção de Aluno -->
                 <div class="mb-3">
-                    <label for="aluno" class="form-label">Estudante:</label>
-                    <select class="form-select" id="aluno">
+                    <label for="aluno2" class="form-label">Estudante:</label>
+                    <select class="form-select" id="aluno2">
                         <option selected disabled>Selecione um estudante...</option>
-                        <!-- Substitua com opções geradas dinamicamente -->
-                        <option value="1">João da Silva</option>
-                        <option value="2">Maria Souza</option>
-                        <option value="3">Carlos Oliveira</option>
                     </select>
                 </div>
 
                 <!-- Seleção de Profissional -->
                 <div class="mb-3">
-                    <label for="profissional" class="form-label">Profissional:</label>
-                    <select class="form-select" id="profissional">
+                    <label for="profissional2" class="form-label">Profissional:</label>
+                    <select class="form-select" id="profissional2">
                         <option selected disabled>Selecione um profissional...</option>
-                        <!-- Profissionais de saúde -->
-                        <option value="1">Dr. Ana Cardoso (Cardiologia)</option>
-                        <option value="2">Dr. Pedro Marques (Neurologia)</option>
-                        <option value="3">Dra. Júlia Farias (Dermatologia)</option>
-                        <!-- Outras opções de profissionais podem ser adicionadas aqui -->
                     </select>
                 </div>
 
                 <!-- Seleção de Data -->
                 <div class="mb-3">
-                    <label for="dia" class="form-label">Data:</label>
-                    <input type="date" class="form-control" id="dia">
+                    <label for="dia2" class="form-label">Data:</label>
+                    <input type="date" class="form-control" id="dia2">
                 </div>
 
-                <!-- Seleção de Horário -->
+                <!-- Seleção de Horário de Início -->
                 <div class="mb-3">
-                    <label for="horario-inicio" class="form-label">Horário de Início:</label>
-                    <select class="form-select" id="horario-inicio">
-                        <option value="7:45">7:45 - 8:15</option>
+                    <label for="horario-inicio2" class="form-label">Horário de Início:</label>
+                    <select class="form-select" id="horario-inicio2">
+                        <option value="7:45:00">7:45 - 8:15</option>
                         <option value="8:15">8:15 - 8:45</option>
                         <option value="8:45">8:45 - 9:15</option>
                         <option value="9:45">9:45 - 10:15</option>
@@ -75,11 +65,25 @@
                     </select>
                 </div>
 
-
+                <!-- Seleção de Horário de Fim -->
+                <div class="mb-3">
+                    <label for="hora-fim2" class="form-label">Horário de Fim:</label>
+                    <select class="form-select" id="hora-fim2">
+                        <option value="8:15:00">8:15 - 8:45</option>
+                        <option value="8:45">8:45 - 9:15</option>
+                        <option value="9:15">9:15 - 9:45</option>
+                        <option value="10:15">10:15 - 10:45</option>
+                        <option value="10:45">10:45 - 11:15</option>
+                        <option value="13:45">13:45 - 14:15</option>
+                        <option value="14:15">14:15 - 14:45</option>
+                        <option value="14:45">14:45 - 15:15</option>
+                        <option value="15:45">15:45 - 16:15</option>
+                        <option value="16:15">16:15 - 16:45</option>
+                    </select>
+                </div>
 
                 <!-- Botão de Envio -->
                 <button type="submit" class="btn btn-primary mt-3">Agendar</button>
-                <button type="submit" class="btn btn-secondary mt-3" style="float: right;"><a href="/APAE/html/visualizarAgendamentos.html" class="nav-link">Visualizar agendamentos</a></button>
             </form>
         </section>
     </main>
@@ -90,25 +94,10 @@
         <p class="">Associação de Pais e Amigos dos Excepcionais de Criciúma</p>
     </footer>
 
-    <script>
-        // Lógica para enviar o formulário e validar os dados (se necessário)
-        document.getElementById('agendamento-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+    <!-- Scripts -->
+    <script src="/APAE/javascript/agendamentos/cadastroagendamento.js"></script>
+    
 
-            const aluno = document.getElementById('aluno').value;
-            const profissional = document.getElementById('profissional').value;
-            const dia = document.getElementById('dia').value;
-            const horarioInicio = document.getElementById('horario-inicio').value;
-            const horaFim = document.getElementById('hora-fim').value;
-
-            if (aluno && profissional && dia && horarioInicio && horaFim) {
-                // Aqui, você pode enviar os dados para o backend ou exibir uma mensagem de sucesso
-                alert('Agendamento realizado com sucesso!');
-            } else {
-                alert('Por favor, preencha todos os campos!');
-            }
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

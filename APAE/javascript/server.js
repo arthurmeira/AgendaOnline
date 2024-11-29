@@ -5,6 +5,7 @@ const usuariosRoutes = require('../routes/usuariosRoutes'); // Defina corretamen
 const profissionaisRoutes = require('../routes/profissionaisRoutes');
 const agendamentosRoutes = require('../routes/agendamentosRoutes');
 
+
 const app = express();
 
 // Middleware
