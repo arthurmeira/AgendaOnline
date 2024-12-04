@@ -102,6 +102,6 @@ router.delete('/agendamentos/:id', async (req, res) => {
         console.error('Erro ao excluir agendamento:', err);
         res.status(500).json({ error: 'Erro interno ao excluir o agendamento' });
     }
-});
+});''
 
 module.exports = router;  // Exporta o router para ser utilizado no server.js

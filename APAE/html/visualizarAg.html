@@ -55,21 +55,36 @@
             }
 
             try {
+                // Busca os detalhes do agendamento
                 const resposta = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`);
                 const agendamento = await resposta.json();
 
-                if (resposta.ok) {
-                    document.getElementById('detalhes-container').innerHTML = `
-                        <p><strong>ID:</strong> ${agendamento.id}</p>
-                        <p><strong>Dia:</strong> ${new Date(agendamento.dia).toLocaleDateString()}</p>
-                        <p><strong>Horário Início:</strong> ${new Date(agendamento.horario_inicio).toLocaleTimeString()}</p>
-                        <p><strong>Horário Fim:</strong> ${new Date(agendamento.horario_fim).toLocaleTimeString()}</p>
-                        <p><strong>Profissional:</strong> ${agendamento.cod_profissional || 'N/A'}</p>
-                        <p><strong>Aluno:</strong> ${agendamento.cod_aluno || 'N/A'}</p>
-                    `;
-                } else {
-                    document.getElementById('detalhes-container').innerText = 'Erro ao carregar detalhes do agendamento.';
+                if (!resposta.ok) {
+                    throw new Error('Erro ao buscar agendamento.');
                 }
+
+                // Busca os dados do profissional e aluno
+                const [respostaProfissional, respostaAluno] = await Promise.all([
+                    fetch(`http://localhost:8080/api/profissionais/${agendamento.cod_profissional}`),
+                    fetch(`http://localhost:8080/api/alunos/${agendamento.cod_aluno}`)
+                ]);
+
+                const profissional = await respostaProfissional.json();
+                const aluno = await respostaAluno.json();
+
+                if (!respostaProfissional.ok || !respostaAluno.ok) {
+                    throw new Error('Erro ao buscar profissional ou aluno.');
+                }
+
+                // Renderiza os detalhes do agendamento
+                document.getElementById('detalhes-container').innerHTML = `
+                    <p><strong>ID:</strong> ${agendamento.id}</p>
+                    <p><strong>Dia:</strong> ${new Date(agendamento.dia).toLocaleDateString()}</p>
+                    <p><strong>Horário Início:</strong> ${agendamento.horario_inicio}</p>
+                    <p><strong>Horário Fim:</strong> ${agendamento.horario_fim}</p>
+                    <p><strong>Profissional:</strong> ${profissional.nome || 'N/A'}</p>
+                    <p><strong>Aluno:</strong> ${aluno.nome || 'N/A'}</p>
+                `;
             } catch (err) {
                 console.error('Erro ao buscar detalhes do agendamento:', err);
                 document.getElementById('detalhes-container').innerText = 'Erro ao carregar dados do agendamento.';

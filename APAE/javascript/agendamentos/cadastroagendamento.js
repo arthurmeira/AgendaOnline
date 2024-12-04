@@ -1,5 +1,5 @@
- // Função para carregar os alunos
- async function carregarAlunos() {
+// Função para carregar os alunos
+async function carregarAlunos() {
     try {
         const response = await fetch('http://localhost:8080/api/alunos');
         const alunos = await response.json();
@@ -42,6 +42,23 @@ async function carregarProfissionais() {
     }
 }
 
+// Função para calcular o horário de fim (30 minutos após o horário de início)
+function calcularHorarioFim(horarioInicio) {
+    const [hora, minuto] = horarioInicio.split(':').map(Number);
+    const inicio = new Date();
+    inicio.setHours(hora);
+    inicio.setMinutes(minuto);
+    inicio.setSeconds(0);
+
+    // Adicionar 30 minutos ao horário de início
+    inicio.setMinutes(inicio.getMinutes() + 30);
+
+    // Formatar o horário de fim no formato HH:MM:00
+    const horaFim = String(inicio.getHours()).padStart(2, '0');
+    const minutoFim = String(inicio.getMinutes()).padStart(2, '0');
+    return `${horaFim}:${minutoFim}:00`;
+}
+
 // Event listener para o formulário de agendamento
 document.getElementById('agendamento-form').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -51,7 +68,9 @@ document.getElementById('agendamento-form').addEventListener('submit', async (ev
     const cod_profissional = document.getElementById('profissional2').value;
     const dia = document.getElementById('dia2').value;
     const horario_inicio = document.getElementById('horario-inicio2').value;
-    const horario_fim = document.getElementById('hora-fim2').value;
+
+    // Calcular o horário de término (30 minutos após o horário de início)
+    const horario_fim = calcularHorarioFim(horario_inicio);
 
     // Validação dos campos
     if (!cod_aluno || !cod_profissional || !dia || !horario_inicio || !horario_fim) {
