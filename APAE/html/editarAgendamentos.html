@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8">
@@ -14,7 +14,7 @@
     <header class="d-flex flex-column align-items-center justify-content-center py-3">
         <ul class="nav nav-pills mt-1">
             <li class="nav-item"><a href="/html/home.html" class="nav-link">Usuários</a></li>
-            <li class="nav-item"><a href="/html/agendamentos.html" class="nav-link">Agendamentos</a></li>
+            <li class="nav-item"><a href="/html/agendamentos.html" class="nav-link active" aria-current="page">Agendamentos</a></li>
             <li class="nav-item"><a href="/html/contato.html" class="nav-link">Contato</a></li>
         </ul>
     </header>
@@ -24,150 +24,162 @@
         <section>
             <br><br>
             <h2 class="text-center mb-4">Editar Agendamento</h2>
-
-            <!-- Formulário de Edição -->
-            <form id="editar-agendamento-form">
+            <form id="agendamento-form">
+                <!-- Seleção de Aluno -->
                 <div class="mb-3">
-                    <label for="aluno" class="form-label">Estudante:</label>
-                    <select class="form-select" id="aluno">
-                        <option selected disabled>Carregando estudantes...</option>
+                    <label for="aluno2" class="form-label">Estudante:</label>
+                    <select class="form-select" id="aluno2">
+                        <option selected disabled>Selecione um estudante...</option>
                     </select>
                 </div>
 
+                <!-- Seleção de Profissional -->
                 <div class="mb-3">
-                    <label for="profissional" class="form-label">Profissional:</label>
-                    <select class="form-select" id="profissional">
-                        <option selected disabled>Carregando profissionais...</option>
+                    <label for="profissional2" class="form-label">Profissional:</label>
+                    <select class="form-select" id="profissional2">
+                        <option selected disabled>Selecione um profissional...</option>
                     </select>
                 </div>
 
+                <!-- Seleção de Data -->
                 <div class="mb-3">
-                    <label for="dia" class="form-label">Data:</label>
-                    <input type="date" class="form-control" id="dia">
+                    <label for="dia2" class="form-label">Data:</label>
+                    <input type="date" class="form-control" id="dia2">
                 </div>
 
+                <!-- Seleção de Horário de Início -->
                 <div class="mb-3">
-                    <label for="horario-inicio" class="form-label">Horário de Início:</label>
-                    <select class="form-select" id="horario-inicio"></select>
+                    <label for="horario-inicio2" class="form-label">Horário do agendamento:</label>
+                    <select class="form-select" id="horario-inicio2">
+                        <option value="07:45:00">7:45 - 8:15</option>
+                        <option value="08:15:00">8:15 - 8:45</option>
+                        <option value="08:45:00">8:45 - 9:15</option>
+                        <option value="09:45:00">9:45 - 10:15</option>
+                        <option value="10:15:00">10:15 - 10:45</option>
+                        <option value="13:15:00">13:15 - 13:45</option>
+                        <option value="13:45:00">13:45 - 14:15</option>
+                        <option value="14:15:00">14:15 - 14:45</option>
+                        <option value="15:15:00">15:15 - 15:45</option>
+                        <option value="15:45:00">15:45 - 16:15</option>
+                        <option value="16:15:00">16:15 - 16:45</option>
+                    </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="horario-fim" class="form-label">Horário de Fim:</label>
-                    <select class="form-select" id="horario-fim"></select>
-                </div>
-
+                <!-- Botão de Envio -->
                 <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
-                <a href="/html/agendamentos.html" class="btn btn-secondary mt-3">Cancelar</a>
+                <button type="button" class="btn btn-secondary mt-3" style="float: right;"><a href="/html/visualizarAgendamentos.html" class="nav-link">Visualizar agendamentos</a></button>
             </form>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="d-block">
+    <footer class="d-block text-center py-3">
         <img src="/images/logo.png" alt="Logo">
         <p>Associação de Pais e Amigos dos Excepcionais de Criciúma</p>
     </footer>
 
-    <!-- Script para carregar e salvar dados -->
+    <!-- Scripts -->
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const params = new URLSearchParams(window.location.search);
-            const agendamentoId = params.get('id');
+document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const agendamentoId = params.get('id');
 
-            if (!agendamentoId) {
-                alert('Agendamento não encontrado!');
-                window.location.href = '/html/agendamentos.html';
-                return;
-            }
+    if (!agendamentoId) {
+        alert('ID do agendamento não fornecido!');
+        window.location.href = '/html/agendamentos.html';
+        return;
+    }
 
-            const horarios = ['08:00', '08:15', '08:30', '08:45', '09:00', '09:15', '09:30']; // Exemplos
+    // Função para carregar opções de Alunos e Profissionais
+    async function carregarOpcoes(selectId, apiEndpoint, valorSelecionado) {
+        const select = document.getElementById(selectId);
+        try {
+            const resposta = await fetch(apiEndpoint);
+            const opcoes = await resposta.json();
 
-            async function carregarOpcoes(selectId, apiEndpoint, valorSelecionado) {
-                const select = document.getElementById(selectId);
-                try {
-                    const resposta = await fetch(apiEndpoint);
-                    const opcoes = await resposta.json();
+            select.innerHTML = '<option disabled selected>Selecione...</option>';
+            opcoes.forEach(opcao => {
+                const optionElement = document.createElement('option');
+                optionElement.value = opcao.id;
+                optionElement.textContent = opcao.nome; // Ajuste conforme a estrutura do seu API
+                select.appendChild(optionElement);
+            });
 
-                    select.innerHTML = '<option disabled selected>Selecione...</option>';
-                    opcoes.forEach(opcao => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = opcao.id;
-                        optionElement.textContent = opcao.nome; // Substitua "nome" pelo campo correto
-                        select.appendChild(optionElement);
-                    });
+            select.value = valorSelecionado;
+        } catch (err) {
+            console.error(`Erro ao carregar opções para ${selectId}:`, err);
+        }
+    }
 
-                    select.value = valorSelecionado;
-                } catch (err) {
-                    console.error(`Erro ao carregar opções para ${selectId}:`, err);
-                }
-            }
+    try {
+        // Buscar dados do agendamento
+        const resposta = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`);
+        const agendamento = await resposta.json();
+
+        // Preencher os campos com os dados do agendamento
+        document.getElementById('dia2').value = new Date(agendamento.dia).toISOString().split('T')[0];
+        document.getElementById('horario-inicio2').value = agendamento.horario_inicio;
+
+        // Carregar opções de aluno e profissional
+        await carregarOpcoes('aluno2', 'http://localhost:8080/api/alunos', agendamento.cod_aluno);
+        await carregarOpcoes('profissional2', 'http://localhost:8080/api/profissionais', agendamento.cod_profissional);
+
+        // Submeter alterações
+        document.getElementById('agendamento-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const horario_inicio = document.getElementById('horario-inicio2').value;
+
+            // Se você quiser calcular o horário de término automaticamente no frontend:
+            const horario_fim = calcularHorarioFim(horario_inicio);
+
+            const dadosAtualizados = {
+                cod_aluno: document.getElementById('aluno2').value,
+                cod_profissional: document.getElementById('profissional2').value,
+                dia: document.getElementById('dia2').value,
+                horario_inicio: horario_inicio,
+                horario_fim: horario_fim, // Agora estamos enviando o horário de término calculado
+            };
 
             try {
-                const resposta = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`);
-                const agendamento = await resposta.json();
-
-                // Preenche os campos com os dados recebidos
-                document.getElementById('dia').value = new Date(agendamento.dia).toISOString().split('T')[0];
-
-                const horarioInicioSelect = document.getElementById('horario-inicio');
-                const horarioFimSelect = document.getElementById('horario-fim');
-
-                horarios.forEach(horario => {
-                    const optionInicio = document.createElement('option');
-                    optionInicio.value = horario + ':00';
-                    optionInicio.textContent = horario;
-                    horarioInicioSelect.appendChild(optionInicio);
-
-                    const optionFim = document.createElement('option');
-                    optionFim.value = horario + ':00';
-                    optionFim.textContent = horario;
-                    horarioFimSelect.appendChild(optionFim);
+                const respostaAtualizacao = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosAtualizados),
                 });
 
-                horarioInicioSelect.value = agendamento.horario_inicio;
-                horarioFimSelect.value = agendamento.horario_fim;
-
-                // Carregar opções para os selects
-                await carregarOpcoes('aluno', 'http://localhost:8080/api/alunos', agendamento.cod_aluno);
-                await carregarOpcoes('profissional', 'http://localhost:8080/api/profissionais', agendamento.cod_profissional);
-
-                // Submeter alterações
-                document.getElementById('editar-agendamento-form').addEventListener('submit', async (event) => {
-                    event.preventDefault();
-
-                    const dadosAtualizados = {
-                        cod_aluno: document.getElementById('aluno').value,
-                        cod_profissional: document.getElementById('profissional').value,
-                        dia: document.getElementById('dia').value,
-                        horario_inicio: document.getElementById('horario-inicio').value,
-                        horario_fim: document.getElementById('horario-fim').value,
-                    };
-
-                    try {
-                        const respostaAtualizacao = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(dadosAtualizados),
-                        });
-
-                        if (respostaAtualizacao.ok) {
-                            alert('Agendamento atualizado com sucesso!');
-                            window.location.href = '/html/agendamentos.html';
-                        } else {
-                            alert('Erro ao atualizar agendamento.');
-                        }
-                    } catch (err) {
-                        console.error('Erro ao enviar dados:', err);
-                        alert('Erro ao salvar alterações.');
-                    }
-                });
-
+                if (respostaAtualizacao.ok) {
+                    alert('Agendamento atualizado com sucesso!');
+                    window.location.href = '/html/agendamentos.html';
+                } else {
+                    alert('Erro ao atualizar agendamento.');
+                }
             } catch (err) {
-                console.error('Erro ao buscar agendamento:', err);
-                alert('Erro ao carregar dados do agendamento.');
+                console.error('Erro ao enviar dados:', err);
+                alert('Erro ao salvar alterações.');
             }
         });
+
+    } catch (err) {
+        console.error('Erro ao buscar agendamento:', err);
+        alert('Erro ao carregar dados do agendamento.');
+    }
+
+    // Função para calcular o horário de término com base no horário de início
+    function calcularHorarioFim(horario_inicio) {
+        const [horas, minutos] = horario_inicio.split(':').map(Number);
+        let novoHorario = new Date();
+        novoHorario.setHours(horas);
+        novoHorario.setMinutes(minutos + 30);  // Supondo que o agendamento tenha duração de 30 minutos
+
+        const horasFim = novoHorario.getHours().toString().padStart(2, '0');
+        const minutosFim = novoHorario.getMinutes().toString().padStart(2, '0');
+        return `${horasFim}:${minutosFim}:00`;
+    }
+});
+
     </script>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
