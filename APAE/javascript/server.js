@@ -5,7 +5,6 @@ const usuariosRoutes = require('../routes/usuariosRoutes'); // Defina corretamen
 const profissionaisRoutes = require('../routes/profissionaisRoutes');
 const agendamentosRoutes = require('../routes/agendamentosRoutes');
 
-
 const app = express();
 
 // Middleware
@@ -25,6 +24,10 @@ app.get('/', (req, res) => {
 
 app.get('/visualizarUsuarios', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'html', 'visualizarUsuarios.html'));
+});
+
+app.get('/visualizarAgendamentos', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'html', 'visualizarAgendamentos.html'));
 });
 
 // Rotas específicas de API

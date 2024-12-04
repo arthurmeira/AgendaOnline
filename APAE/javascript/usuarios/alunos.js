@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${usuario.deficiencia}</td>
                 <td>${new Date(usuario.data_nascimento).toLocaleDateString()}</td>
                 <td style="text-align: center;">
-                    <a href="#" class="visualizar-aluno" data-id="${usuario.id}"><img width="32px" src="/APAE/images/visualizar.png" alt=""></a>
-                    <a href="#" class="editar-aluno"><img width="32px" src="/APAE/images/editar.png" alt=""></a>
-                    <a href="#" class="excluir-aluno" data-id="${usuario.id}"><img width="32px" src="/APAE/images/excluir.png" alt=""></a>
+                    <a href="#" class="visualizar-aluno" data-id="${usuario.id}"><img width="32px" src="/images/visualizar.png" alt=""></a>
+                    <a href="#" class="editar-aluno"><img width="32px" src="/images/editar.png" alt=""></a>
+                    <a href="#" class="excluir-aluno" data-id="${usuario.id}"><img width="32px" src="/images/excluir.png" alt=""></a>
                 </td>                
             `;
             tabelaBody.appendChild(linha); // Adiciona a linha à tabela
@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const alunoId = link.getAttribute('data-id'); // Pega o ID do aluno
                 
                 // Redireciona para a página de visualização com o ID na URL
-                window.location.href = `/APAE/html/visualizarAluno.html?id=${alunoId}`;
+                window.location.href = `/html/visualizarAluno.html?id=${alunoId}`;
             });
         });
-
+ 
         // Adicionando a funcionalidade de exclusão
         const excluirLinks = document.querySelectorAll('.excluir-aluno'); // Seletor específico para alunos
         excluirLinks.forEach(link => {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const alunoId = linha.getAttribute('data-id'); // Recupera o ID do aluno
         
                 // Redireciona para a página de edição com o ID na URL
-                window.location.href = `/APAE/html/edicaoAluno.html?id=${alunoId}`;
+                window.location.href = `/html/edicaoAluno.html?id=${alunoId}`;
             });
         });
 

@@ -50,17 +50,17 @@ document.getElementById('agendamento-form').addEventListener('submit', async (ev
     const cod_aluno = document.getElementById('aluno2').value;
     const cod_profissional = document.getElementById('profissional2').value;
     const dia = document.getElementById('dia2').value;
-    const horario_Inicio = document.getElementById('horario-inicio2').value;
-    const horario_Fim = document.getElementById('hora-fim2').value;
+    const horario_inicio = document.getElementById('horario-inicio2').value;
+    const horario_fim = document.getElementById('hora-fim2').value;
 
     // Validação dos campos
-    if (!cod_aluno || !cod_profissional || !dia || !horario_Inicio || !horario_Fim) {
+    if (!cod_aluno || !cod_profissional || !dia || !horario_inicio || !horario_fim) {
         alert('Por favor, preencha todos os campos!');
         return;
     }
 
     // Objeto de agendamento
-    const agendamento = { dia, horario_Inicio, horario_Fim, cod_profissional, cod_aluno };
+    const agendamento = { dia, horario_inicio, horario_fim, cod_profissional, cod_aluno };
 
     try {
         const response = await fetch('http://localhost:8080/api/agendamentos', {

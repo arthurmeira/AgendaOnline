@@ -1,79 +1,122 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const resposta = await fetch('http://localhost:8080/api/agendamentos');
+        // Primeiramente, busca os agendamentos
+        const resposta = await fetch('http://localhost:8080/api/agendamentos'); // Chamada à API de agendamentos
+        const agendamentos = await resposta.json();
         
-        if (!resposta.ok) {
-            throw new Error('Erro na requisição');
-        }
-
-        const usuarios = await resposta.json();
-        
-        // Verifique o que está sendo retornado pela API
-        console.log(usuarios);  // Adicione essa linha para verificar a estrutura da resposta
-
         const tabelaBody = document.getElementById("agendamento-tbody");
-        tabelaBody.innerHTML = '';
+        if (!tabelaBody) {
+            console.error('Elemento com ID "agendamento-tbody" não encontrado no DOM!');
+            return;
+        }
+ 
+        tabelaBody.innerHTML = ''; // Limpa qualquer conteúdo anterior
 
-        // Adicionar os dados na tabela
-        usuarios.forEach(usuario => {
+        // Adiciona os dados à tabela
+        agendamentos.forEach(agendamento => {
             const linha = document.createElement("tr");
-            
-            // Verifique as propriedades de cada usuário antes de acessar
-            console.log(usuario);  // Adicione um log para verificar cada objeto de usuário
-
-            // Garanta que as propriedades existam antes de usá-las
-            const profissional = usuario.cod_profissional || 'N/A'; // Fallback se o campo não existir
-            const aluno = usuario.cod_aluno || 'N/A'; // Fallback se o campo não existir
-
+            linha.setAttribute('data-id', agendamento.id); // Adiciona o atributo data-id para identificar a linha
             linha.innerHTML = `
-                <td>${usuario.id}</td>
-                <td>${new Date(usuario.dia).toLocaleDateString()}</td>
-                <td>${usuario.horario_inicio}</td>
-                <td>${usuario.horario_fim}</td>
-                <td>${profissional}</td>
-                <td>${aluno}</td>
+                <td>${agendamento.id}</td>
+                <td>${new Date(agendamento.dia).toLocaleDateString()}</td>
+                <td>${agendamento.horario_inicio}</td>
+                <td>${agendamento.horario_fim}</td>
+                <td>${agendamento.cod_profissional || 'N/A'}</td>
+                <td>${agendamento.cod_aluno || 'N/A'}</td>
                 <td style="text-align: center;">
-                    <a href="#"><img width="32px" src="/APAE/images/visualizar.png" alt="Visualizar"></a>
-                    <a href="#"><img width="32px" src="/APAE/images/editar.png" alt="Editar"></a>
-                    <a href="#" class="delete" data-id="${usuario.id}">
-                        <img width="32px" src="/APAE/images/excluir.png" alt="Excluir">
+                    <a href="#" class="visualizar-agendamento" data-id="${agendamento.id}">
+                        <img width="32px" src="/images/visualizar.png" alt="Visualizar">
                     </a>
-                </td>  
+                    <a href="#" class="editar-agendamento" data-id="${agendamento.id}">
+                        <img width="32px" src="/images/editar.png" alt="Editar">
+                    </a>
+                    <a href="#" class="excluir-agendamento" data-id="${agendamento.id}">
+                        <img width="32px" src="/images/excluir.png" alt="Excluir">
+                    </a>
+                </td>                
             `;
-            tabelaBody.appendChild(linha);
+            tabelaBody.appendChild(linha); // Adiciona a linha à tabela
         });
 
-        // Adiciona evento de clique para excluir
-        const deleteButtons = document.querySelectorAll('.delete');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', async (event) => {
+        // Função para visualizar agendamentos
+        const visualizarLinks = document.querySelectorAll('.visualizar-agendamento');
+        visualizarLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+                const agendamentoId = link.getAttribute('data-id'); // Pega o ID do agendamento
+                // Redireciona para a página de visualização com o ID na URL
+                window.location.href = `/html/visualizarAg.html?id=${agendamentoId}`;
+            });
+        });
+
+        // Função para excluir um agendamento
+        const excluirLinks = document.querySelectorAll('.excluir-agendamento');
+        excluirLinks.forEach(link => {
+            link.addEventListener('click', async (event) => {
                 event.preventDefault();
-                const agendamentoId = button.getAttribute('data-id');
-                
-                // Pergunta ao usuário se ele tem certeza de que deseja excluir
+                const agendamentoId = link.getAttribute('data-id');
                 const confirmacao = confirm('Tem certeza que deseja excluir este agendamento?');
+
                 if (confirmacao) {
                     try {
-                        const resposta = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`, {
-                            method: 'DELETE'
+                        const respostaDelete = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`, {
+                            method: 'DELETE',
                         });
 
-                        if (resposta.ok) {
-                            // Remove a linha da tabela
-                            const linha = button.closest('tr');
-                            linha.remove();
+                        const resultado = await respostaDelete.json();
+
+                        if (respostaDelete.ok) {
                             alert('Agendamento excluído com sucesso!');
+                            const linhaParaRemover = link.closest('tr');
+                            linhaParaRemover.remove();
                         } else {
-                            throw new Error('Erro ao excluir o agendamento');
+                            alert(`Erro: ${resultado.error}`);
                         }
                     } catch (err) {
-                        console.error('Erro ao excluir o agendamento:', err);
-                        alert('Erro ao excluir o agendamento');
+                        console.error('Erro ao excluir agendamento:', err);
+                        alert('Erro ao excluir agendamento');
                     }
-                } else {
-                    alert('Exclusão cancelada.');
                 }
             });
+        });
+
+        // Função para editar um agendamento
+        document.querySelectorAll('.editar-agendamento').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const linha = link.closest('tr');
+                const agendamentoId = linha.getAttribute('data-id');
+                window.location.href = `/html/editarAgendamentos.html?id=${agendamentoId}`;
+            });
+        });
+
+        // Requisição para buscar os horários disponíveis para o formulário de agendamento
+        const respostaHorarios = await fetch('http://localhost:8080/api/horarios'); // Chamada à API de horários
+        const horarios = await respostaHorarios.json();
+        
+        const horarioInicioSelect = document.getElementById('horario-inicio2');
+        const horaFimSelect = document.getElementById('hora-fim2');
+
+        if (!horarioInicioSelect || !horaFimSelect) {
+            console.error('Campos de horário não encontrados!');
+            return;
+        }
+
+        // Limpar as opções anteriores
+        horarioInicioSelect.innerHTML = '<option selected disabled>Selecione um horário...</option>';
+        horaFimSelect.innerHTML = '<option selected disabled>Selecione um horário...</option>';
+
+        // Adicionar os horários ao select de "horário início" e "hora fim"
+        horarios.forEach(horario => {
+            const optionInicio = document.createElement('option');
+            optionInicio.value = horario;
+            optionInicio.textContent = horario;
+            horarioInicioSelect.appendChild(optionInicio);
+
+            const optionFim = document.createElement('option');
+            optionFim.value = horario;
+            optionFim.textContent = horario;
+            horaFimSelect.appendChild(optionFim);
         });
 
     } catch (err) {

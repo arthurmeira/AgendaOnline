@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar Agendamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="bg-light">
+    <!-- Header -->
+    <header class="d-flex flex-column align-items-center justify-content-center py-3">
+        <ul class="nav nav-pills mt-1">
+            <li class="nav-item"><a href="/html/home.html" class="nav-link">Usuários</a></li>
+            <li class="nav-item"><a href="/html/agendamentos.html" class="nav-link">Agendamentos</a></li>
+            <li class="nav-item"><a href="/html/contato.html" class="nav-link">Contato</a></li>
+        </ul>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <section>
+            <br><br>
+            <h2 class="text-center mb-4">Editar Agendamento</h2>
+
+            <!-- Formulário de Edição -->
+            <form id="editar-agendamento-form">
+                <div class="mb-3">
+                    <label for="aluno" class="form-label">Estudante:</label>
+                    <select class="form-select" id="aluno">
+                        <option selected disabled>Carregando estudantes...</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="profissional" class="form-label">Profissional:</label>
+                    <select class="form-select" id="profissional">
+                        <option selected disabled>Carregando profissionais...</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="dia" class="form-label">Data:</label>
+                    <input type="date" class="form-control" id="dia">
+                </div>
+
+                <div class="mb-3">
+                    <label for="horario-inicio" class="form-label">Horário de Início:</label>
+                    <select class="form-select" id="horario-inicio"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="horario-fim" class="form-label">Horário de Fim:</label>
+                    <select class="form-select" id="horario-fim"></select>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
+                <a href="/html/agendamentos.html" class="btn btn-secondary mt-3">Cancelar</a>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="d-block">
+        <img src="/images/logo.png" alt="Logo">
+        <p>Associação de Pais e Amigos dos Excepcionais de Criciúma</p>
+    </footer>
+
+    <!-- Script para carregar e salvar dados -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            const agendamentoId = params.get('id');
+
+            if (!agendamentoId) {
+                alert('Agendamento não encontrado!');
+                window.location.href = '/html/agendamentos.html';
+                return;
+            }
+
+            const horarios = ['08:00', '08:15', '08:30', '08:45', '09:00', '09:15', '09:30']; // Exemplos
+
+            async function carregarOpcoes(selectId, apiEndpoint, valorSelecionado) {
+                const select = document.getElementById(selectId);
+                try {
+                    const resposta = await fetch(apiEndpoint);
+                    const opcoes = await resposta.json();
+
+                    select.innerHTML = '<option disabled selected>Selecione...</option>';
+                    opcoes.forEach(opcao => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = opcao.id;
+                        optionElement.textContent = opcao.nome; // Substitua "nome" pelo campo correto
+                        select.appendChild(optionElement);
+                    });
+
+                    select.value = valorSelecionado;
+                } catch (err) {
+                    console.error(`Erro ao carregar opções para ${selectId}:`, err);
+                }
+            }
+
+            try {
+                const resposta = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`);
+                const agendamento = await resposta.json();
+
+                // Preenche os campos com os dados recebidos
+                document.getElementById('dia').value = new Date(agendamento.dia).toISOString().split('T')[0];
+
+                const horarioInicioSelect = document.getElementById('horario-inicio');
+                const horarioFimSelect = document.getElementById('horario-fim');
+
+                horarios.forEach(horario => {
+                    const optionInicio = document.createElement('option');
+                    optionInicio.value = horario + ':00';
+                    optionInicio.textContent = horario;
+                    horarioInicioSelect.appendChild(optionInicio);
+
+                    const optionFim = document.createElement('option');
+                    optionFim.value = horario + ':00';
+                    optionFim.textContent = horario;
+                    horarioFimSelect.appendChild(optionFim);
+                });
+
+                horarioInicioSelect.value = agendamento.horario_inicio;
+                horarioFimSelect.value = agendamento.horario_fim;
+
+                // Carregar opções para os selects
+                await carregarOpcoes('aluno', 'http://localhost:8080/api/alunos', agendamento.cod_aluno);
+                await carregarOpcoes('profissional', 'http://localhost:8080/api/profissionais', agendamento.cod_profissional);
+
+                // Submeter alterações
+                document.getElementById('editar-agendamento-form').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const dadosAtualizados = {
+                        cod_aluno: document.getElementById('aluno').value,
+                        cod_profissional: document.getElementById('profissional').value,
+                        dia: document.getElementById('dia').value,
+                        horario_inicio: document.getElementById('horario-inicio').value,
+                        horario_fim: document.getElementById('horario-fim').value,
+                    };
+
+                    try {
+                        const respostaAtualizacao = await fetch(`http://localhost:8080/api/agendamentos/${agendamentoId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(dadosAtualizados),
+                        });
+
+                        if (respostaAtualizacao.ok) {
+                            alert('Agendamento atualizado com sucesso!');
+                            window.location.href = '/html/agendamentos.html';
+                        } else {
+                            alert('Erro ao atualizar agendamento.');
+                        }
+                    } catch (err) {
+                        console.error('Erro ao enviar dados:', err);
+                        alert('Erro ao salvar alterações.');
+                    }
+                });
+
+            } catch (err) {
+                console.error('Erro ao buscar agendamento:', err);
+                alert('Erro ao carregar dados do agendamento.');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

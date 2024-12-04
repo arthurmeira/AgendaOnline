@@ -36,11 +36,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${profissional.numero}</td>
                 <td style="text-align: center;">
                     <a href="#" class="visualizar-profissional" data-id="${profissional.id}">
-                        <img width="32px" src="/APAE/images/visualizar.png" alt="">
+                        <img width="32px" src="/images/visualizar.png" alt="">
                     </a>
-                    <a href="#"><img width="32px" src="/APAE/images/editar.png" alt=""></a>
+                    <a href="#"><img width="32px" src="/images/editar.png" alt=""></a>
                     <a href="#" class="excluir" data-id="${profissional.id}">
-                        <img width="32px" src="/APAE/images/excluir.png" alt="">
+                        <img width="32px" src="/images/excluir.png" alt="">
                     </a>
                 </td>  
             `;
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
                 const profissionalId = link.getAttribute('data-id');
-                window.location.href = `/APAE/html/visualizarProfissional.html?id=${profissionalId}`;
+                window.location.href = `/html/visualizarProfissional.html?id=${profissionalId}`;
             });
         });
 

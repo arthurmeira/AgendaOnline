@@ -63,6 +63,25 @@ router.post('/agendamentos', async (req, res) => {
     }
 });
 
+router.get('/agendamentos/:id', async (req, res) => {
+    const agendamentoId = req.params.id; // Obtém o ID do agendamento a partir da URL
+
+    try {
+        // Consulta para buscar o agendamento pelo ID
+        const query = 'SELECT * FROM agendamento WHERE id = $1';
+        const { rows } = await pool.query(query, [agendamentoId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Agendamento não encontrado' });
+        }
+
+        res.json(rows[0]); // Retorna o agendamento encontrado
+    } catch (err) {
+        console.error('Erro ao buscar agendamento:', err);
+        res.status(500).json({ error: 'Erro interno ao buscar agendamento' });
+    }
+});
+
 
 router.delete('/agendamentos/:id', async (req, res) => {
     const agendamentoId = req.params.id;  // Obtém o ID do agendamento da URL
