@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
                 const profissionalId = link.getAttribute('data-id');
-                window.location.href = `/html/visualizarProfissional.html?id=${profissionalId}`;
+                window.location.href = `/html/profissionais/visualizarProfissional.html?id=${profissionalId}`;
             });
         });
 
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 event.preventDefault();
                 const profissionalId = link.getAttribute('data-id');
                 // Redirecionar para a página de edição
-                window.location.href = `/html/editarProfissional.html?id=${profissionalId}`;
+                window.location.href = `/html/profissionais/editarProfissionais.html?id=${profissionalId}`;
             });
         });
     } catch (err) {

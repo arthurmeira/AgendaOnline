@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 event.preventDefault();
                 const linha = link.closest('tr');
                 const agendamentoId = linha.getAttribute('data-id');
-                window.location.href = `/html/editarAgendamentos.html?id=${agendamentoId}`;
+                window.location.href = `/html/agendamentos/editarAgendamentos.html?id=${agendamentoId}`;
             });
         });
 

@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
                 const alunoId = link.getAttribute('data-id');
-                window.location.href = `/html/visualizarAluno.html?id=${alunoId}`;
+                window.location.href = `/html/alunos/visualizarAluno.html?id=${alunoId}`;
             });
         });
 
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 event.preventDefault();
                 const alunoId = link.getAttribute('data-id');
                 // Redireciona para a página de edição com o ID na URL
-                window.location.href = `/html/editarAluno.html?id=${alunoId}`;
+                window.location.href = `/html/alunos/editarAlunos.html?id=${alunoId}`;
             });
         });
 

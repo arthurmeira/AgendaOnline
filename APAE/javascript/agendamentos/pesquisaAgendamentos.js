@@ -1,59 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const selectTipo = document.getElementById("tipo-visualizacao");
-    const alunoForm = document.getElementById("aluno-form");
-    const profissionalForm = document.getElementById("profissional-form");
+    const campoPesquisa = document.getElementById("pesquisa");
+    const tabelaBody = document.getElementById("agendamento-tbody");
 
-    const pesquisaAluno = document.getElementById("pesquisa-aluno");
-    const pesquisaProfissional = document.getElementById("pesquisa-profissional");
-
-    selectTipo.addEventListener("change", () => {
-        // Esconde ambas as tabelas
-        alunoForm.style.display = "none";
-        profissionalForm.style.display = "none";
-
-        // Exibe a tabela correspondente
-        if (selectTipo.value === "aluno") {
-            alunoForm.style.display = "block";
-        } else if (selectTipo.value === "profissional") {
-            profissionalForm.style.display = "block";
-        }
-    });
-
-    // Função para filtrar a tabela de Alunos
-    pesquisaAluno.addEventListener("input", () => {
-        filterTable("aluno-tbody", pesquisaAluno.value.toLowerCase());
-    });
-
-    // Função para filtrar a tabela de Profissionais
-    pesquisaProfissional.addEventListener("input", () => {
-        filterTable("profissional-tbody", pesquisaProfissional.value.toLowerCase());
-    });
-
-    // Função genérica para filtrar as tabelas
-    function filterTable(tbodyId, query) {
-        const tbody = document.getElementById(tbodyId);
-        const rows = tbody.getElementsByTagName("tr");
-
-        // Loop através das linhas da tabela
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            let match = false;
-
-            // Verificar cada célula da linha
-            for (let j = 0; j < cells.length; j++) {
-                const cellText = cells[j].textContent.toLowerCase();
-                if (cellText.includes(query)) {
-                    match = true; // Encontrou uma correspondência
-                    break; // Não precisa verificar mais células dessa linha
-                }
-            }
-
-            // Exibe ou oculta a linha dependendo da correspondência
-            if (match) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
+    if (!campoPesquisa || !tabelaBody) {
+        console.error('Campo de pesquisa ou tabela não encontrados!');
+        return;
     }
+
+    campoPesquisa.addEventListener("input", () => {
+        const termoPesquisa = campoPesquisa.value.toLowerCase();
+
+        // Itera sobre as linhas da tabela para aplicar o filtro
+        Array.from(tabelaBody.children).forEach(linha => {
+            const colunas = Array.from(linha.children);
+            const [id, dia, horarioInicio, horarioFim, profissional, aluno] = colunas.map(coluna =>
+                coluna.textContent.trim().toLowerCase()
+            );
+
+            // Aplica o filtro nos critérios informados
+            const corresponde = id.includes(termoPesquisa) ||
+                dia.includes(termoPesquisa) ||
+                profissional.includes(termoPesquisa) ||
+                aluno.includes(termoPesquisa);
+
+            // Alterna a visibilidade da linha conforme o resultado do filtro
+            linha.style.display = corresponde ? "" : "none";
+        });
+    });
 });
