@@ -55,6 +55,38 @@ router.post('/profissionais', async (req, res) => {
     }
 });
 
+// Atualizar um profissional por ID
+router.put('/profissionais/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome, especialidade_id, email, numero } = req.body;
+
+    console.log('Dados recebidos para atualização:', req.body);
+
+    try {
+        if (!nome || !especialidade_id || !email || !numero) {
+            return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+        }
+
+        const query = `
+            UPDATE profissional
+            SET nome = $1, especialidade_id = $2, email = $3, numero = $4
+            WHERE id = $5
+            RETURNING *;
+        `;
+        const values = [nome, especialidade_id, email, numero, id];
+        const { rows } = await pool.query(query, values);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Profissional não encontrado.' });
+        }
+
+        res.status(200).json(rows[0]);
+    } catch (err) {
+        console.error('Erro ao atualizar profissional:', err);
+        res.status(500).json({ error: 'Erro ao atualizar profissional.' });
+    }
+});
+
 // Excluir um profissional
 router.delete('/profissionais/:id', async (req, res) => {
     try {

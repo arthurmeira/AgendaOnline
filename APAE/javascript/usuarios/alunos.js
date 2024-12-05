@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         tabelaBody.innerHTML = ''; // Limpa qualquer conteúdo anterior
 
-        // Adicione os dados à tabela
+        // Adiciona os dados à tabela
         usuarios.forEach(usuario => {
             const linha = document.createElement("tr");
             linha.setAttribute('data-id', usuario.id); // Adiciona o atributo data-id para identificar a linha
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${new Date(usuario.data_nascimento).toLocaleDateString()}</td>
                 <td style="text-align: center;">
                     <a href="#" class="visualizar-aluno" data-id="${usuario.id}"><img width="32px" src="/images/visualizar.png" alt=""></a>
-                    <a href="#" class="editar-aluno"><img width="32px" src="/images/editar.png" alt=""></a>
+                    <a href="#" class="editar-aluno" data-id="${usuario.id}"><img width="32px" src="/images/editar.png" alt=""></a>
                     <a href="#" class="excluir-aluno" data-id="${usuario.id}"><img width="32px" src="/images/excluir.png" alt=""></a>
                 </td>                
             `;
@@ -31,30 +31,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         // Função para visualizar um aluno específico
-        const visualizarLinks = document.querySelectorAll('.visualizar-aluno'); // Seletor específico para visualizar alunos
+        const visualizarLinks = document.querySelectorAll('.visualizar-aluno');
         visualizarLinks.forEach(link => {
             link.addEventListener('click', (event) => {
-                event.preventDefault(); // Impede o comportamento padrão do link
-                const alunoId = link.getAttribute('data-id'); // Pega o ID do aluno
-                
-                // Redireciona para a página de visualização com o ID na URL
+                event.preventDefault();
+                const alunoId = link.getAttribute('data-id');
                 window.location.href = `/html/visualizarAluno.html?id=${alunoId}`;
             });
         });
- 
+
+        // Função para redirecionar para edição
+        document.querySelectorAll('.editar-aluno').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const alunoId = link.getAttribute('data-id');
+                // Redireciona para a página de edição com o ID na URL
+                window.location.href = `/html/editarAluno.html?id=${alunoId}`;
+            });
+        });
+
         // Adicionando a funcionalidade de exclusão
-        const excluirLinks = document.querySelectorAll('.excluir-aluno'); // Seletor específico para alunos
+        const excluirLinks = document.querySelectorAll('.excluir-aluno');
         excluirLinks.forEach(link => {
             link.addEventListener('click', async (event) => {
-                event.preventDefault(); // Impede o comportamento padrão do link
-                const alunoId = link.getAttribute('data-id'); // Pega o ID do aluno
-                
-                // Confirmação antes de excluir
+                event.preventDefault();
+                const alunoId = link.getAttribute('data-id');
                 const confirmacao = confirm('Tem certeza que deseja excluir este aluno?');
                 
                 if (confirmacao) {
                     try {
-                        // Requisição DELETE para o back-end para excluir o aluno no banco de dados
                         const respostaDelete = await fetch(`http://localhost:8080/api/alunos/${alunoId}`, {
                             method: 'DELETE',
                         });
@@ -63,9 +68,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         if (respostaDelete.ok) {
                             alert('Aluno excluído com sucesso!');
-                            // Remover a linha da tabela localmente, após exclusão no banco
-                            const linhaParaRemover = link.closest('tr'); // Encontra a linha correspondente ao aluno
-                            linhaParaRemover.remove(); // Remove a linha da tabela
+                            const linhaParaRemover = link.closest('tr');
+                            linhaParaRemover.remove();
                         } else {
                             alert(`Erro: ${resultado.error}`);
                         }
@@ -74,18 +78,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         alert('Erro ao excluir aluno');
                     }
                 }
-            });
-        });
-
-        // Função para redirecionar para edição
-        document.querySelectorAll('.editar-aluno').forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault(); // Impede o comportamento padrão do link
-                const linha = link.closest('tr'); // Pega a linha correspondente ao aluno
-                const alunoId = linha.getAttribute('data-id'); // Recupera o ID do aluno
-        
-                // Redireciona para a página de edição com o ID na URL
-                window.location.href = `/html/edicaoAluno.html?id=${alunoId}`;
             });
         });
 

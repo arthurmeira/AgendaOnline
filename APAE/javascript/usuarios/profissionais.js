@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const resposta = await fetch('http://localhost:8080/api/profissionais'); // Chamada à API de profissionais
+        const resposta = await fetch('http://localhost:8080/api/profissionais');
         const profissionais = await resposta.json();
-        
-        // Mapeamento de especialidades
+
         const especialidades = {
             1: "Cardiologia",
             2: "Ortopedia",
@@ -12,20 +11,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             5: "Pediatria"
         };
 
-        // Verifique se o tbody está correto
         const tabelaBody = document.getElementById("profissional-tbody");
         if (!tabelaBody) {
-            console.error('Elemento com ID "profissional-tbody" não encontrado no DOM!');
+            console.error('Elemento com ID "profissional-tbody" não encontrado!');
             return;
         }
 
-        tabelaBody.innerHTML = ''; // Limpa qualquer conteúdo anterior
+        tabelaBody.innerHTML = ''; // Limpar tabela
 
-        // Adicione os dados à tabela
         profissionais.forEach(profissional => {
             const linha = document.createElement("tr");
-
-            // Substituir o código da especialidade pelo nome
             const nomeEspecialidade = especialidades[profissional.especialidade_id] || "Desconhecida";
 
             linha.innerHTML = `
@@ -38,14 +33,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <a href="#" class="visualizar-profissional" data-id="${profissional.id}">
                         <img width="32px" src="/images/visualizar.png" alt="">
                     </a>
-                    <a href="#"><img width="32px" src="/images/editar.png" alt=""></a>
+                    <a href="#" class="editar-profissional" data-id="${profissional.id}">
+                        <img width="32px" src="/images/editar.png" alt="">
+                    </a>
                     <a href="#" class="excluir" data-id="${profissional.id}">
                         <img width="32px" src="/images/excluir.png" alt="">
                     </a>
-                </td>  
+                </td>
             `;
-            tabelaBody.appendChild(linha); // Adiciona a linha à tabela
+            tabelaBody.appendChild(linha);
         });
+
 
         // Adicionar evento de exclusão
         const excluirLinks = document.querySelectorAll('.excluir');
@@ -91,7 +89,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
 
+
+        // Evento para "Editar" profissional
+        const editarLinks = document.querySelectorAll('.editar-profissional');
+        editarLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const profissionalId = link.getAttribute('data-id');
+                // Redirecionar para a página de edição
+                window.location.href = `/html/editarProfissional.html?id=${profissionalId}`;
+            });
+        });
     } catch (err) {
-        console.error('Erro ao buscar ou renderizar dados (Profissionais):', err);
+        console.error('Erro ao buscar dados dos profissionais:', err);
     }
 });
