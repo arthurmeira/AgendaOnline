@@ -9,12 +9,28 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuarioLocal = { email: "t@d.com", senha: "123" };
+
+            document.getElementById("btnEntrar").addEventListener("click", () => {
+                const email = document.getElementById("exampleFormControlInput1").value;
+                const senha = document.getElementById("inputPassword5").value;
+
+                if (email === usuarioLocal.email && senha === usuarioLocal.senha) {
+
+                    window.location.href = "/html/home.html"; // Redireciona para a página home
+                } else {
+                    alert("Email ou senha incorretos.");
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
 
     <div id="login" class="d-flex justify-content-center align-items-center vh-100">
-        
         <div>
             <img src="/images/logo.png" alt=""><br>
             <label for="exampleFormControlInput1" class="form-label">Email</label>
@@ -23,7 +39,7 @@
             <label for="inputPassword5" class="form-label">Senha</label>
             <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
             <br>
-            <button type="submit" class="btn btn-primary mb-3">Entrar</button>
+            <button id="btnEntrar" type="button" class="btn btn-primary mb-3">Entrar</button>
         </div>
     </div>
 

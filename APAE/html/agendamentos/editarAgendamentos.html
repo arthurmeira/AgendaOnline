@@ -67,7 +67,7 @@
 
                 <!-- Botão de Envio -->
                 <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
-                <button type="button" class="btn btn-secondary mt-3" style="float: right;"><a href="/html/visualizarAgendamentos.html" class="nav-link">Visualizar agendamentos</a></button>
+                <button type="button" class="btn btn-secondary mt-3" style="float: right;"><a href="/html/agendamentos/visualizarAgendamentos.html" class="nav-link">Visualizar agendamentos</a></button>
             </form>
         </section>
     </main>
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!agendamentoId) {
         alert('ID do agendamento não fornecido!');
-        window.location.href = '/html/agendamentos.html';
+        window.location.href = '/html/agendamentos/agendamentos.html';
         return;
     }
 
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (respostaAtualizacao.ok) {
                     alert('Agendamento atualizado com sucesso!');
-                    window.location.href = '/html/agendamentos.html';
+                    window.location.href = '/html/agendamentos/agendamentos.html';
                 } else {
                     alert('Erro ao atualizar agendamento.');
                 }

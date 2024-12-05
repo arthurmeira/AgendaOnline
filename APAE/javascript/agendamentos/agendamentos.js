@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 event.preventDefault(); // Impede o comportamento padrão do link
                 const agendamentoId = link.getAttribute('data-id'); // Pega o ID do agendamento
                 // Redireciona para a página de visualização com o ID na URL
-                window.location.href = `/html/visualizarAg.html?id=${agendamentoId}`;
+                window.location.href = `/html/agendamentos/visualizarAg.html?id=${agendamentoId}`;
             });
         });
 
